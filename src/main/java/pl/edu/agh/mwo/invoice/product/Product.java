@@ -15,13 +15,15 @@ public abstract class Product {
             throw new IllegalArgumentException("Produkt bez nazwy");
         }
 
+        if (price==null) {
+            throw new IllegalArgumentException("Cena to null");
+        }
+
         if (price.compareTo(new BigDecimal(0)) ==-1){
                 throw new IllegalArgumentException("Produkt bez nazwy");
             }
 
-        if (price==null) {
-            throw new IllegalArgumentException("Cena to null");
-        }
+
 
         this.name = name;
         this.price = price;
