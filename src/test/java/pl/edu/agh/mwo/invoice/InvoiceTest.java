@@ -125,4 +125,19 @@ public class InvoiceTest {
     public void testAddingNullProduct() {
         invoice.addProduct(null);
     }
+
+    @Test
+    public void testInnvoiceNumber() {
+        int number = new Invoice().getNumber();
+    }
+
+    @Test
+    public void testInnvoiceNumberIsGraterThanZero() {
+        Assert.assertThat(new Invoice().getNumber(), Matchers.greaterThan(0));
+
+    }
+
+
+
+
 }
