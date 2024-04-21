@@ -156,7 +156,25 @@ public class InvoiceTest {
         Invoice invoice = new Invoice();
         assertFalse(invoice.hasAnyItems());
     }
+    @Test
+    public void testAddNewProduct() {
+        Invoice invoice = new Invoice();
+        Product product = new OtherProduct("Czekoladki Wedel", new BigDecimal("10.00"));
+        invoice.addProduct(product, 2);
+        assertEquals(1, invoice.getNumberOfPosition());
+        assertEquals(2, invoice.getProductQuantity(product));
+    }
 
+    @Test
+    public void testAddDuplicateProduct() {
+
+        Invoice invoice = new Invoice();
+        Product product = new OtherProduct("Czekoladki Wawel", new BigDecimal("10.00"));
+        invoice.addProduct(product, 2);
+        invoice.addProduct(product, 3);
+        assertEquals(1, invoice.getNumberOfPosition());
+        assertEquals(5, invoice.getProductQuantity(product));
+    }
 
 
 

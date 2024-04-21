@@ -25,8 +25,27 @@ public class Invoice {
         if (product == null || quantity <= 0) {
             throw new IllegalArgumentException();
         }
-        products.put(product, quantity);
-    }
+
+
+        boolean foundDuplicate = false;
+        for (Product existingProduct : products.keySet()) {
+            if (existingProduct.getName().equals(product.getName())) {
+                // Jeśli nazwa produktu jest taka sama, zwiększ liczbę sztuk
+                Integer currentQuantity = products.get(existingProduct);
+                products.put(existingProduct, currentQuantity + quantity);
+                foundDuplicate = true;
+                break;
+            }
+        }
+
+        // Jeśli nie znaleziono duplikatu, dodaj nową pozycję na fakturze
+        if (!foundDuplicate) {
+            products.put(product, quantity);
+        }
+
+            }
+
+
 
     public BigDecimal getNetTotal() {
         BigDecimal totalNet = BigDecimal.ZERO;
@@ -75,23 +94,21 @@ public class Invoice {
         return productList.toString();
     }
 
-    public int getNumberOfItems() {
-
-        return products.values().stream().mapToInt(Integer::intValue).sum();
-
+    public int getNumberOfItems() {return products.values().stream().mapToInt(Integer::intValue).sum();
     }
 
     public boolean hasAnyItems() {
         return !products.isEmpty();}
 
-
-    public boolean hasProductsOfZeroOrNegativePrice() {
-        for (Product product : products.keySet()) {
-        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            return true; }
-        }
-        return false;
+    public int getNumberOfPosition() {
+        return products.size();
     }
+
+
+    public int getProductQuantity(Product product) {
+        return products.getOrDefault(product, 0);
+    }
+
 
 
 }
