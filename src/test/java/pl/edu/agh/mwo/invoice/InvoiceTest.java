@@ -13,6 +13,8 @@ import pl.edu.agh.mwo.invoice.product.OtherProduct;
 import pl.edu.agh.mwo.invoice.product.Product;
 import pl.edu.agh.mwo.invoice.product.TaxFreeProduct;
 
+import static org.junit.Assert.*;
+
 public class InvoiceTest {
     private Invoice invoice;
 
@@ -138,6 +140,27 @@ public class InvoiceTest {
     }
 
 
+    @Test
+    public void testGetNumberOfItems() {
+        Invoice invoice = new Invoice();
+        Product product1 = new OtherProduct("Czekoladki Wedel", new BigDecimal("10.00"));
+        Product product2 = new OtherProduct("Czekoladki Wawel", new BigDecimal("20.00"));
+        invoice.addProduct(product1, 2);
+        invoice.addProduct(product2, 3);
+
+        assertEquals(5, invoice.getNumberOfItems());
+    }
+
+    @Test
+    public void testIfInvoiceHasAnyItems() {
+        Invoice invoice = new Invoice();
+        assertFalse(invoice.hasAnyItems());
+    }
+
+
 
 
 }
+
+
+

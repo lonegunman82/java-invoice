@@ -5,14 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-    public int getNumber()
-    {
+    public int getNumber() {
 
         return new Random().nextInt(10000);
-    };
+    }
+
+    ;
     private Map<Product, Integer> products = new HashMap<Product, Integer>();
 
     public void addProduct(Product product) {
@@ -47,4 +49,49 @@ public class Invoice {
         }
         return totalGross;
     }
+
+    public String generateProductList() {
+        StringBuilder productList = new StringBuilder();
+
+
+        productList.append("Numer faktury: ").append(getNumber()).append("\n");
+
+        productList.append("╔═══════════════════════════════════════════════════════════════════════════╗\n");
+        productList.append("║           Lista produktów                                                 ║\n");
+        productList.append("╠═══════════════════════════════════════════════════════════════════════════╣\n");
+
+        products.forEach((product, quantity) -> {
+            BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+            String productName = product.getName();
+            String quantityAndPrice = "Ilość:" + quantity + "|Cena:" + totalPrice;
+            String line = String.format("║ %-50s │ %-20s ║\n", productName, quantityAndPrice);
+            productList.append(line);
+        });
+
+
+        productList.append("╚═══════════════════════════════════════════════════════════════════════════╝\n");
+        productList.append("Liczba pozycji: ").append(getNumberOfItems());
+
+        return productList.toString();
+    }
+
+    public int getNumberOfItems() {
+
+        return products.values().stream().mapToInt(Integer::intValue).sum();
+
+    }
+
+    public boolean hasAnyItems() {
+        return !products.isEmpty();}
+
+
+    public boolean hasProductsOfZeroOrNegativePrice() {
+        for (Product product : products.keySet()) {
+        if (product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            return true; }
+        }
+        return false;
+    }
+
+
 }
